@@ -37,13 +37,13 @@ public class DataIssuePlugin {
                 .query(DataQuery.of("Bool"))
                 .build();
 
-        Sponge.getDataManager().registerLegacyManipulatorIds("de.randombyte.dataissue.SampleData", DataRegistration.builder()
+        DataRegistration.builder()
                 .dataClass(SampleData.class)
                 .immutableClass(SampleData.Immutable.class)
                 .builder(new SampleData.Builder())
                 .manipulatorId("bool")
                 .dataName("Bool")
-                .buildAndRegister(pluginContainer));
+                .buildAndRegister(pluginContainer);
     }
 
     @Listener
