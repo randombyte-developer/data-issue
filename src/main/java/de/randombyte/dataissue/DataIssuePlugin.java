@@ -6,9 +6,9 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.data.DataQuery;
-import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.data.DataTransactionResult;
 import org.spongepowered.api.data.key.Key;
+import org.spongepowered.api.data.key.KeyFactory;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
@@ -30,20 +30,16 @@ public class DataIssuePlugin {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        BOOL = Key.builder()
-                .type(new TypeToken<Value<Boolean>>(){})
-                .id("data-issue-plugin:bool")
-                .name("Bool")
-                .query(DataQuery.of("Bool"))
-                .build();
+        BOOL = KeyFactory.makeSingleKey(
+                TypeToken.of(Boolean.class),
+                new TypeToken<Value<Boolean>>(){},
+                DataQuery.of("Bool"),
+                "data-issue-plugin:bool", "Bool");
 
-        Sponge.getDataManager().registerLegacyManipulatorIds("de.randombyte.dataissue.SampleData", DataRegistration.builder()
-                .dataClass(SampleData.class)
-                .immutableClass(SampleData.Immutable.class)
-                .builder(new SampleData.Builder())
-                .manipulatorId("bool")
-                .dataName("Bool")
-                .buildAndRegister(pluginContainer));
+        Sponge.getDataManager().register(
+                SampleData.class,
+                SampleData.Immutable.class,
+                new SampleData.Builder());
     }
 
     @Listener
